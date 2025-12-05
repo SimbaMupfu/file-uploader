@@ -35,6 +35,11 @@ public class FileUploadController {
             return "redirect:/uploadStatus";
         }
         try {
+            Path uploadPath = Paths.get(UPLOADED_FOLDER);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
             byte[] bytes = file.getBytes();
             Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
             Files.write(path, bytes);
@@ -46,5 +51,10 @@ public class FileUploadController {
             e.printStackTrace();
         }
         return "redirect:/uploadStatus";
+    }
+
+    @GetMapping("/uploadStatus")
+    public String uploadStatus() {
+        return "uploadStatus";
     }
 }
